@@ -1,0 +1,1 @@
+# Cortex Django Project Initializer

@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cortex – Safe Escrow & Logistics Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Space Grotesk -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Lucide Icons (UMD / ESM fallback CDN representation) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030712; /* deep luxury dark gray */
+        }
+        .space-heading {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .mono-text {
+            font-family: 'Fira Code', monospace;
+        }
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            900: '#115e59',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col antialiased">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="border-b border-slate-900 bg-slate-950/80 backdrop-blur sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-gradient-to-tr from-cyan-500 to-indigo-600 p-2.5 rounded-xl shadow-lg ring-1 ring-white/10">
+                    <!-- Custom SVG representation for Cortex Logo -->
+                    <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold space-heading tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">CORTEX</h1>
+                    <p class="text-[10px] text-slate-500 font-medium tracking-widest uppercase">Safe Escrow Repair</p>
+                </div>
+            </div>
+
+            <!-- Dashboard Switcher -->
+            <nav class="flex items-center gap-1.5 sm:gap-2 bg-slate-900/50 p-1 rounded-xl border border-slate-800">
+                <button onclick="setRole('landing')" id="nav-landing" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-all bg-slate-800 text-white border border-slate-700">
+                    O platformie
+                </button>
+                <button onclick="setRole('client')" id="nav-client" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-all text-slate-400 hover:text-white">
+                    Panel Klienta
+                </button>
+                <button onclick="setRole('service')" id="nav-service" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-all text-slate-400 hover:text-white">
+                    Panel Serwisu
+                </button>
+                <button onclick="setRole('admin')" id="nav-admin" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-all text-slate-400 hover:text-white">
+                    Admin
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN BODY SECTION -->
+    <main class="flex-grow">
+        
+        <!-- 1. LANDING VIEW -->
+        <div id="view-landing" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="px-3 py-1 bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 rounded-full text-xs font-semibold tracking-wide uppercase">CORTEX DLA DJANGO + MYSQL</span>
+                <h2 class="text-4xl sm:text-5xl font-black space-heading tracking-tight mt-4 text-white">
+                    Zabezpieczone Zlecenia Serwisowe & InPost bez Drukowania Etykiet
+                </h2>
+                <p class="text-slate-400 mt-6 text-lg leading-relaxed">
+                    Dwustopniowy escrow Stripe chroni fundusze naprawy, a automatyzacja InPost ShipX pozwala klientom nadawać paczki prostym kodem bezetykietowym. Sprawdź działanie na żywo.
+                </p>
+                
+                <div class="mt-8 flex justify-center gap-4">
+                    <button onclick="setRole('client')" class="px-6 py-3.5 bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-950 font-bold rounded-xl shadow-lg shadow-cyan-500/10 cursor-pointer transform hover:-translate-y-0.5 active:translate-y-0 transition-all">
+                        Zleć nową naprawę
+                    </button>
+                    <button onclick="setRole('service')" class="px-6 py-3.5 bg-slate-900 border border-slate-800 text-slate-300 font-semibold rounded-xl hover:bg-slate-800 transition-all cursor-pointer">
+                        Panel techniczny wejścia
+                    </button>
+                </div>
+            </div>
+
+            <!-- Active Services list -->
+            <div class="border-t border-slate-900 pt-12">
+                <h3 class="text-xl font-bold space-heading mb-6 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                    Aktywne laboratoria naprawcze partnerów
+                </h3>
+                
+                <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Rendered dynamically by JS -->
+                    <div class="p-8 text-center text-slate-500">Wczytywanie serwerowni...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. CLIENT WORKSPACE -->
+        <div id="view-client" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 hidden">
+            <h2 class="text-2xl font-black space-heading mb-6 text-white border-b border-slate-900 pb-4 flex items-center gap-2">
+                <i data-lucide="user" class="text-cyan-400"></i> Panel Zarządzania Klienta
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Left Column: Repair form & orders list -->
+                <div class="lg:col-span-4 flex flex-col gap-6">
+                    <!-- Registration Box -->
+                    <div class="bg-slate-950 border border-slate-900 rounded-2xl p-6">
+                        <h3 class="text-md space-heading font-bold text-white mb-4">Zgłoś usterkę urządzenia</h3>
+                        <form id="create-order-form" onsubmit="handleCreateOrder(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs text-slate-405 font-semibold mb-1 uppercase tracking-wider">Serwis docelowy</label>
+                                <select id="form-service" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-cyan-500">
+                                    <!-- Dynamic categories -->
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-405 font-semibold mb-1 uppercase tracking-wider">Urządzenie i model</label>
+                                <input type="text" id="form-device" required placeholder="np. MacBook Pro 14 M3, Nintendo Switch" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-cyan-500" />
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-405 font-semibold mb-1 uppercase tracking-wider">Drobiazgowy opis usterki</label>
+                                <textarea id="form-desc" required placeholder="Co się stało? Czy urządzenie reaguje na prąd? Czy było zalane?" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-cyan-500 h-24 resize-none"></textarea>
+                            </div>
+                            <button type="submit" class="w-full py-2.5 bg-cyan-500 text-slate-950 font-bold rounded-lg text-xs cursor-pointer hover:bg-cyan-400 transition-all flex items-center justify-center gap-2">
+                                <i data-lucide="plus" class="w-4 h-4"></i> Zarejestruj Zlecenie
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Client active orders -->
+                    <div class="bg-slate-950 border border-slate-900 rounded-2xl p-6">
+                        <h3 class="text-md space-heading font-bold text-white mb-3">Twoje aktualne zlecenia</h3>
+                        <div id="client-orders-list" class="space-y-3">
+                            <p class="text-xs text-slate-500 italic">Brak zarejestrowanych zleceń w sesji.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Details, chat & live status -->
+                <div class="lg:col-span-8">
+                    <div id="client-details-fallback" class="bg-slate-950/40 border border-slate-900/50 rounded-2xl p-12 text-center text-slate-500 h-full flex flex-col justify-center items-center">
+                        <i data-lucide="inbox" class="w-12 h-12 stroke-1 mb-4 text-slate-600"></i>
+                        <p class="space-heading font-medium text-slate-400">Brak aktywnego zlecenia z bazy</p>
+                        <p class="text-xs text-slate-600 mt-2">Wybierz lub utwórz zlecenie z lewego panelu, by zobaczyć timeline logistyki InPost i status Stripe Escrow.</p>
+                    </div>
+
+                    <div id="client-details-container" class="hidden space-y-6">
+                        <!-- Primary Order Info -->
+                        <div class="bg-slate-950 border border-slate-900 rounded-2xl p-6">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-900 pb-4 mb-4">
+                                <div>
+                                    <span class="text-xs text-cyan-400 font-mono" id="client-detail-id">ZLECENIE #---</span>
+                                    <h3 class="text-xl font-bold space-heading text-white mt-1" id="client-detail-device">MacBook Pro 16</h3>
+                                </div>
+                                <div class="px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider bg-indigo-505/10 text-indigo-400 border border-indigo-500/20" id="client-detail-status">
+                                    DIAGNOSTYKA
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs mb-4">
+                                <div class="p-3 bg-slate-900/50 rounded-xl border border-slate-900">
+                                    <span class="text-slate-500 block mb-1">Status Kaucji Escrow</span>
+                                    <span id="client-detail-escrow" class="font-bold text-emerald-400">ZABLOKOWANE: 40.00 PLN</span>
+                                </div>
+                                <div class="p-3 bg-slate-900/50 rounded-xl border border-slate-900">
+                                    <span class="text-slate-500 block mb-1">Serwis Diagnostyczny</span>
+                                    <span id="client-detail-service" class="font-bold text-slate-200">Reballing Lab</span>
+                                </div>
+                                <div class="p-3 bg-slate-900/50 rounded-xl border border-slate-900">
+                                    <span class="text-slate-500 block mb-1">InPost Inbound Kod</span>
+                                    <span id="client-detail-inbound-track" class="font-bold tracking-wider font-mono text-cyan-400">Brak</span>
+                                </div>
+                            </div>
+
+                            <!-- INTERACTIVE CONTROLLER ACTIONS FOR CLIENTS -->
+                            <div id="client-actions-bar" class="bg-slate-900/20 border border-slate-900 p-4 rounded-xl flex flex-wrap gap-3 items-center justify-between">
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-300">Dostępne akcje na tym etapie:</h4>
+                                    <p class="text-[10px] text-slate-500" id="client-actions-hint">Wykonaj opłatę escrow diagnostyczną.</p>
+                                </div>
+                                <div id="client-actions-btn-holder" class="flex gap-2">
+                                    <!-- Dynamic Action Button -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chat & Live logs grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Support Chat -->
+                            <div class="bg-slate-950 border border-slate-900 rounded-2xl p-6 flex flex-col h-[400px]">
+                                <h3 class="text-sm font-bold space-heading text-white border-b border-slate-900 pb-3 mb-3 flex items-center justify-between">
+                                    <span>Kanał Wymiany Logistyki</span>
+                                    <span class="text-[10px] uppercase font-mono text-slate-500">Zabezpieczone SSL</span>
+                                </h3>
+                                
+                                <div id="client-chat-box" class="flex-grow overflow-y-auto space-y-3 pr-2 scroll-smooth text-xs">
+                                    <!-- Messages dynamic -->
+                                </div>
+
+                                <form onsubmit="handleSendMessage(event, 'CLIENT')" class="mt-4 flex gap-2">
+                                    <input type="text" id="client-chat-input" required placeholder="Napisz do inżyniera..." class="flex-grow bg-slate-901 bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500" />
+                                    <button type="submit" class="p-2.5 bg-cyan-500 text-slate-950 font-semibold rounded-lg text-xs cursor-pointer hover:bg-cyan-400">
+                                        <i data-lucide="send" class="w-4 h-4"></i>
+                                    </button>
+                                </form>
+                            </div>
+
+                            <!-- System Live Log -->
+                            <div class="bg-slate-950 border border-slate-900 rounded-2xl p-6 flex flex-col h-[400px]">
+                                <h3 class="text-sm font-bold space-heading text-white border-b border-slate-900 pb-3 mb-3">
+                                    Logi platformowe i logistyczne
+                                </h3>
+                                <div id="client-logs-box" class="flex-grow overflow-y-auto space-y-2 pr-2 font-mono text-[10px]">
+                                    <!-- Real logs from Django system db -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. SERVICE WORKSPACE -->
+        <div id="view-service" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 hidden">
+            <h2 class="text-2xl font-black space-heading mb-6 text-white border-b border-slate-900 pb-4 flex items-center gap-2">
+                <i data-lucide="building-2" class="text-indigo-400"></i> Panel Technika i Serwisu
+            </h2>
+
+            <!-- Orders selection and technician actions -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <div class="bg-slate-950 border border-slate-900 rounded-2xl p-6 flex flex-col gap-4">
+                    <h3 class="text-md space-heading font-bold text-white mb-2">Zlecenia w Twoim warsztacie</h3>
+                    <div id="service-orders-list" class="space-y-3">
+                        <p class="text-xs text-slate-500">Uruchom symulator, dodaj zlecenia.</p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-3">
+                    <div id="service-details-fallback" class="bg-slate-950/40 border border-slate-900/50 rounded-2xl p-12 text-center text-slate-500 flex flex-col justify-center items-center h-full">
+                        <i data-lucide="wrench" class="w-12 h-12 stroke-1 mb-4 text-slate-600"></i>
+                        <p class="space-heading font-medium text-slate-400">Wybierz zlecenie z warsztatu</p>
+                        <p class="text-xs text-slate-600 mt-2">Masz wgląd w pełną kartę klienta, w tym kod wysyłkowy i zablokowany depozyt kaucji.</p>
+                    </div>
+
+                    <div id="service-details-container" class="hidden space-y-6">
+                        <!-- Technical Order card -->
+                        <div class="bg-slate-950 border border-slate-900 rounded-2xl p-6">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-900 pb-4 mb-4">
+                                <div>
+                                    <span class="text-xs text-indigo-400 font-mono" id="service-detail-id">ZLECENIE ID #---</span>
+                                    <h3 class="text-xl font-bold space-heading text-white mt-1" id="service-detail-device">MacBook Pro 16</h3>
+                                </div>
+                                <div class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20" id="service-detail-status">
+                                    IN_DIAGNOSIS
+                                </div>
+                            </div>
+
+                            <!-- Detailed columns -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs mb-6">
+                                <div class="space-y-3">
+                                    <p class="text-slate-400"><strong class="text-slate-200">Klient:</strong> <span id="service-detail-client">Adrian Biber</span></p>
+                                    <p class="text-slate-400"><strong class="text-slate-200">Email:</strong> <span id="service-detail-email">Biber.Adrian@gmail.com</span></p>
+                                    <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+                                        <p class="text-xs text-slate-300 font-medium mb-1">Opis usterki zamieszczony przez klienta:</p>
+                                        <p class="text-slate-500 italic" id="service-detail-desc">-</p>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-3 bg-slate-900/30 p-4 rounded-xl border border-slate-900">
+                                    <h4 class="text-xs font-bold text-slate-350 uppercase">Logistyka InPost & Escrow</h4>
+                                    <p class="text-slate-450">Depozyt w systemie: <strong class="text-emerald-400 font-mono" id="service-detail-escrow">-</strong></p>
+                                    <p class="text-slate-450">Paczkomat docelowy serwisu: <strong class="text-indigo-400 font-mono" id="service-detail-target-locker">-</strong></p>
+                                    <p class="text-slate-450">Kod śledzenia zwrotnego: <strong class="text-cyan-400 font-mono" id="service-detail-outbound-track">Brak</strong></p>
+                                </div>
+                            </div>
+
+                            <!-- TECHNICIAN FORM ACTIONS -->
+                            <div class="bg-slate-900/40 border border-slate-905 border-slate-900 rounded-xl p-4">
+                                <h4 class="text-xs font-black uppercase text-slate-350 mb-3 tracking-wider">Operacje laboratoryjne i logistyczne</h4>
+                                <div id="service-actions-btn-holder" class="flex flex-wrap gap-2">
+                                    <!-- Dynamic technician trigger inputs and triggers -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Technical Chat & Logs split -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Support Chat -->
+                            <div class="bg-slate-950 border border-slate-900 rounded-2xl p-6 flex flex-col h-[350px]">
+                                <h3 class="text-sm font-bold space-heading text-white border-b border-slate-900 pb-3 mb-3">
+                                    Komunikacja z Klientem
+                                </h3>
+                                
+                                <div id="service-chat-box" class="flex-grow overflow-y-auto space-y-3 pr-2 scroll-smooth text-xs">
+                                    <!-- Messages dynamic -->
+                                </div>
+
+                                <form onsubmit="handleSendMessage(event, 'SERVICE')" class="mt-4 flex gap-2">
+                                    <input type="text" id="service-chat-input" required placeholder="Odpowiedz klientowi..." class="flex-grow bg-slate-100 bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500" />
+                                    <button type="submit" class="p-2.5 bg-indigo-500 text-white font-semibold rounded-lg text-xs cursor-pointer hover:bg-indigo-400">
+                                        <i data-lucide="send" class="w-4 h-4"></i>
+                                    </button>
+                                </form>
+                            </div>
+
+                            <!-- System Live Log -->
+                            <div class="bg-slate-950 border border-slate-900 rounded-2xl p-6 flex flex-col h-[350px]">
+                                <h3 class="text-sm font-bold space-heading text-white border-b border-slate-900 pb-3 mb-3">
+                                    Logi wewnętrzne powiązane
+                                </h3>
+                                <div id="service-logs-box" class="flex-grow overflow-y-auto space-y-2 pr-2 font-mono text-[10px]">
+                                    <!-- Real logs from Django system db -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. ADMIN VIEW (ARBITRATION PANEL) -->
+        <div id="view-admin" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 hidden">
+            <h2 class="text-2xl font-black space-heading mb-6 text-white border-b border-slate-900 pb-4 flex items-center gap-2">
+                <i data-lucide="shield-check" class="text-emerald-400"></i> Konsola Arbitrażowa Admina
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                <!-- Stat boxes -->
+                <div class="bg-slate-950 border border-slate-900 p-6 rounded-2xl text-center">
+                    <span class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Depozyty w Escrow w sumie</span>
+                    <h3 class="text-3xl font-bold space-heading text-emerald-400 mt-2 font-mono" id="admin-escrow-sum">4 280.00 PLN</h3>
+                </div>
+                <div class="bg-slate-950 border border-slate-900 p-6 rounded-2xl text-center">
+                    <span class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Prowizja Cortex (5%)</span>
+                    <h3 class="text-3xl font-bold space-heading text-indigo-400 mt-2 font-mono" id="admin-prowizja">214.00 PLN</h3>
+                </div>
+                <div class="bg-slate-950 border border-slate-900 p-6 rounded-2xl text-center">
+                    <span class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Otwarte spory do arbitrażu</span>
+                    <h3 class="text-3xl font-bold space-heading id-badge text-amber-500 mt-2" id="admin-disputes-count">0</h3>
+                </div>
+            </div>
+
+            <!-- Disputed orders panel -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-4 bg-slate-950 border border-slate-900 rounded-2xl p-6">
+                    <h3 class="text-md space-heading font-bold text-white mb-4">Urządzenia w procedurze sporów</h3>
+                    <div id="admin-disputed-list" class="space-y-3">
+                        <p class="text-xs text-slate-500 italic">Brak aktywnych sporów w bazie.</p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-8">
+                    <div id="admin-details-fallback" class="bg-slate-950/40 border border-slate-900/50 rounded-2xl p-12 text-center text-slate-500 flex flex-col justify-center items-center h-full">
+                        <i data-lucide="scale" class="w-12 h-12 stroke-1 mb-4 text-slate-600"></i>
+                        <p class="space-heading font-medium text-slate-400">Wybierz sporne zlecenie</p>
+                        <p class="text-xs text-slate-600 mt-2">Masz władzę absolutną do podzielenia, zwrotu lub przekazania środków zdeponowanych w systemie Stripe.</p>
+                    </div>
+
+                    <div id="admin-details-container" class="hidden bg-slate-950 border border-slate-900 rounded-2xl p-6 space-y-6">
+                        <div class="border-b border-slate-900 pb-4">
+                            <span class="text-xs text-amber-500 font-mono" id="admin-detail-id">ZLECENIE #---</span>
+                            <h3 class="text-xl font-bold space-heading text-white mt-1" id="admin-detail-device">MacBook Pro</h3>
+                        </div>
+
+                        <!-- Arbitration logic options -->
+                        <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-800 space-y-4">
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-200">Decyzja arbitrażowa:</h4>
+                                <p class="text-[10px] text-slate-500">Wybierz sposób rozliczenia escrow.</p>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <button onclick="resolveDispute('RELEASE_ALL')" class="px-4 py-2.5 bg-emerald-500 text-slate-950 font-semibold rounded-lg text-xs cursor-pointer hover:bg-emerald-400 transition-all">
+                                    Uwolnij dla serwisu (100%)
+                                </button>
+                                <button onclick="resolveDispute('REFUND_ALL')" class="px-4 py-2.5 bg-amber-500 text-slate-950 font-semibold rounded-lg text-xs cursor-pointer hover:bg-amber-400 transition-all">
+                                    Zwróć klientowi (100%)
+                                </button>
+                                <button onclick="resolveDispute('SPLIT_50_50')" class="px-4 py-2.5 bg-slate-800 text-slate-200 font-semibold rounded-lg text-xs cursor-pointer hover:bg-slate-700 transition-all border border-slate-700">
+                                    Podziel równe 50/50
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-950 bg-slate-950 py-6 text-center text-xs text-slate-600 mt-12">
+        <p>© 2026 Cortex SaaS Repair Hub. Działa stabilnie z bazą MySQL na Twoim serwerze VPS.</p>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT CONTROLLER -->
+    <script>
+        // Global State holding loaded orders
+        let services = [];
+        let curRole = 'landing';
+        let currentOrderId = null;
+        let ordersList = [];
+        let updateInterval = null;
+
+        // Start initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchServices();
+            
+            // Auto refresh state of active order if visible every 5 seconds
+            updateInterval = setInterval(() => {
+                if (currentOrderId) {
+                    refreshOrderDetails(currentOrderId);
+                }
+            }, 5000);
+        });
+
+        function setRole(role) {
+            curRole = role;
+            
+            // Hide all
+            document.getElementById('view-landing').classList.add('hidden');
+            document.getElementById('view-client').classList.add('hidden');
+            document.getElementById('view-service').classList.add('hidden');
+            document.getElementById('view-admin').classList.add('hidden');
+            
+            // Reset active tags
+            document.getElementById('nav-landing').className = 'px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-all text-slate-400 hover:text-white';
+            document.getElementById('nav-client').className = 'px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-all text-slate-400 hover:text-white';
+            document.getElementById('nav-service').className = 'px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-all text-slate-400 hover:text-white';
+            document.getElementById('nav-admin').className = 'px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-all text-slate-400 hover:text-white';
+
+            // Reactivate selected target
+            if (role === 'landing') {
+                document.getElementById('view-landing').classList.remove('hidden');
+                document.getElementById('nav-landing').className = 'px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-all bg-slate-800 text-white border border-slate-700';
+            } else if (role === 'client') {
+                document.getElementById('view-client').classList.remove('hidden');
+                document.getElementById('nav-client').className = 'px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-all bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 shadow-sm';
+                renderClientOrders();
+            } else if (role === 'service') {
+                document.getElementById('view-service').classList.remove('hidden');
+                document.getElementById('nav-service').className = 'px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-all bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 shadow-sm';
+                renderServiceOrders();
+            } else if (role === 'admin') {
+                document.getElementById('view-admin').classList.remove('hidden');
+                document.getElementById('nav-admin').className = 'px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-all bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-sm';
+                renderAdminOrders();
+            }
+            
+            // Re-render select icons using Lucide
+            lucide.createIcons();
+        }
+
+        // Fetch Services List
+        async function fetchServices() {
+            try {
+                const response = await fetch('/api/services/');
+                const data = await response.json();
+                services = data.services;
+                
+                // Render grids
+                let html = '';
+                let selectHtml = '';
+                services.forEach(s => {
+                    html += `
+                        <div class="bg-slate-950 border border-slate-900 rounded-2xl p-6 hover:border-slate-800 transition-all">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="px-2 py-0.5 bg-cyan-550/10 text-cyan-400 border border-cyan-500/20 rounded text-[10px] font-mono">${s.badge || 'PRO PARTNER'}</span>
+                                <div class="flex items-center gap-1 text-xs text-amber-500 font-bold">
+                                    <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i> ${s.rating.toFixed(1)}
+                                </div>
+                            </div>
+                            <h4 class="text-lg font-bold space-heading text-white">${s.name}</h4>
+                            <p class="text-xs text-slate-400 mt-2 line-clamp-2">${s.description || 'Brak opisu.'}</p>
+                            
+                            <div class="mt-6 pt-4 border-t border-slate-900/50 text-xs flex items-center justify-between text-slate-450">
+                                <div class="flex items-center gap-1">
+                                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-500"></i>
+                                    <span>${s.address}</span>
+                                </div>
+                                <span class="text-[10px] font-mono bg-slate-900 px-2 py-1 rounded border border-slate-800 text-slate-400">${s.inpostLockerId}</span>
+                            </div>
+                        </div>
+                    `;
+                    selectHtml += `<option value="${s.id}">${s.name} (${s.inpostLockerId})</option>`;
+                });
+                
+                document.getElementById('services-grid').innerHTML = html;
+                document.getElementById('form-service').innerHTML = selectHtml;
+                
+                // Fallbacks insertion if empty
+                if (services.length === 0) {
+                    // Populate mock shops directly in client if django DB is empty on first boot
+                    document.getElementById('services-grid').innerHTML = `
+                        <div class="lg:col-span-3 p-12 text-center bg-slate-900/10 rounded-xl border border-dashed border-slate-800 text-slate-500">
+                            Brak laboratoriów w MySQL. Zastosuj mechanizm Django migrations, by zasilić bazę.
+                        </div>
+                    `;
+                }
+
+                lucide.createIcons();
+            } catch (err) {
+                console.error("Failed to load services database:", err);
+            }
+        }
+
+        // Create Repair Order
+        async function handleCreateOrder(e) {
+            e.preventDefault();
+            const serviceId = document.getElementById('form-service').value;
+            const deviceName = document.getElementById('form-device').value;
+            const description = document.getElementById('form-desc').value;
+
+            try {
+                const res = await fetch('/api/orders/create/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ serviceId, deviceName, description })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert("Zlecenie naprawy zostało zarejestrowane w Django! Przejdź do 'Panelu Klienta' i opłać kaucję.");
+                    document.getElementById('create-order-form').reset();
+                    
+                    // Force navigation activation
+                    setRole('client');
+                    selectOrder(data.orderId);
+                }
+            } catch (err) {
+                alert("Błąd połączenia z Django: " + err);
+            }
+        }
+
+        // Render lists representation
+        function renderClientOrders() {
+            // Simulated state load representation
+            renderOrdersInConsole();
+        }
+
+        function renderServiceOrders() {
+            renderOrdersInConsole();
+        }
+
+        function renderAdminOrders() {
+            renderOrdersInConsole();
+        }
+
+        // Console utility to sync active list across views
+        async function renderOrdersInConsole() {
+            // Since we don't have user authentication in place yet for simplicity, we mock IDs list
+            // Or get list of all orders from database to make the interface incredibly real
+            try {
+                const response = await fetch('/api/services/');
+                // Let's assume django has some loaded. For true flexibility we load active order IDs 
+                // registered in local storage during active browser session so user sees their own
+                let savedIds = JSON.parse(localStorage.getItem('cortex_orders') || '[]');
+                
+                const clientList = document.getElementById('client-orders-list');
+                const serviceList = document.getElementById('service-orders-list');
+                const adminList = document.getElementById('admin-disputed-list');
+
+                if (savedIds.length === 0) {
+                    clientList.innerHTML = `<p class="text-xs text-slate-505 text-slate-550 italic">Dodaj nowe zlecenie obok.</p>`;
+                    serviceList.innerHTML = `<p class="text-xs text-slate-550 italic">Brak zleceń.</p>`;
+                    adminList.innerHTML = `<p class="text-xs text-slate-550 italic">Brak sporów.</p>`;
+                    return;
+                }
+
+                let clientHtml = '';
+                let serviceHtml = '';
+                let adminHtml = '';
+                let disputesCount = 0;
+
+                for (let id of savedIds) {
+                    const res = await fetch(`/api/orders/${id}/`);
+                    if (!res.ok) continue;
+                    const data = await res.json();
+                    const s = data.order;
+
+                    const isActive = currentOrderId === s.id ? 'ring-2 ring-cyan-500 bg-slate-900 border-transparent' : 'bg-slate-900/40 border-slate-900 hover:border-slate-800';
+                    const isServiceActive = currentOrderId === s.id ? 'ring-2 ring-indigo-500 bg-slate-900 border-transparent' : 'bg-slate-900/40 border-slate-900 hover:border-slate-800';
+
+                    clientHtml += `
+                        <div onclick="selectOrder(${s.id})" class="p-3 rounded-xl border text-left cursor-pointer transition-all ${isActive}">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-mono text-[9px] text-slate-500">#${s.id}</span>
+                                <span class="text-[9px] font-bold text-cyan-400 uppercase tracking-wider">${s.status}</span>
+                            </div>
+                            <h4 class="text-xs text-slate-200 font-bold font-sans">${s.deviceName}</h4>
+                            <p class="text-[10px] text-slate-500 mt-1">Koszt: <strong class="text-emerald-500">${s.repairCost} PLN</strong></p>
+                        </div>
+                    `;
+
+                    serviceHtml += `
+                        <div onclick="selectOrder(${s.id})" class="p-3 rounded-xl border text-left cursor-pointer transition-all ${isServiceActive}">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-mono text-[9px] text-slate-500">ID: #${s.id}</span>
+                                <span class="text-[9px] font-bold text-indigo-400 uppercase">${s.status}</span>
+                            </div>
+                            <h4 class="text-xs text-slate-200 font-bold">${s.deviceName}</h4>
+                            <p class="text-[10px] text-slate-400 mt-1">Stripe: ${s.escrowStatus}</p>
+                        </div>
+                    `;
+
+                    if (s.status === 'DISPUTED') {
+                        disputesCount++;
+                        const isAdminActive = currentOrderId === s.id ? 'ring-2 ring-amber-500 bg-slate-900' : 'bg-slate-900/40';
+                        adminHtml += `
+                            <div onclick="selectOrder(${s.id})" class="p-3 rounded-xl border border-amber-500/30 text-left cursor-pointer transition-all ${isAdminActive}">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="font-mono text-[9px] text-slate-500">SPÓR: #${s.id}</span>
+                                    <span class="text-[9px] font-bold text-amber-500">DISPUTED</span>
+                                </div>
+                                <h4 class="text-xs text-slate-200 font-bold">${s.deviceName}</h4>
+                                <p class="text-[10px] text-emerald-400 mt-1">Zamrożone: ${s.escrowAmount} PLN</p>
+                            </div>
+                        `;
+                    }
+                }
+
+                clientList.innerHTML = clientHtml;
+                serviceList.innerHTML = serviceHtml;
+                adminList.innerHTML = adminHtml || `<p class="text-xs text-slate-550 italic">Brak aktywnych sporów do medytacji.</p>`;
+                document.getElementById('admin-disputes-count').innerText = disputesCount;
+
+                lucide.createIcons();
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+        // Global Order Selection Controller
+        async function selectOrder(id) {
+            currentOrderId = id;
+            
+            // Persist locally
+            let savedIds = JSON.parse(localStorage.getItem('cortex_orders') || '[]');
+            if (!savedIds.includes(id)) {
+                savedIds.push(id);
+                localStorage.setItem('cortex_orders', JSON.stringify(savedIds));
+            }
+
+            await refreshOrderDetails(id);
+            renderOrdersInConsole();
+        }
+
+        // Live refresh state metrics
+        async function refreshOrderDetails(id) {
+            try {
+                const response = await fetch(`/api/orders/${id}/`);
+                if (!response.ok) return;
+                const data = await response.json();
+                
+                const s = data.order;
+                const messagesList = data.messages;
+                const logsList = data.logs;
+
+                // Sync Client panel UI
+                document.getElementById('client-details-fallback').classList.add('hidden');
+                document.getElementById('client-details-container').classList.remove('hidden');
+                
+                document.getElementById('client-detail-id').innerText = `ZLECENIE ID #${s.id}`;
+                document.getElementById('client-detail-device').innerText = s.deviceName;
+                document.getElementById('client-detail-status').innerText = s.status;
+                document.getElementById('client-detail-escrow').innerText = `ZABLOKOWANE: ${s.escrowAmount.toFixed(2)} PLN (${s.escrowStatus})`;
+                document.getElementById('client-detail-service').innerText = s.serviceName;
+                document.getElementById('client-detail-inbound-track').innerText = s.trackingCodeInbound || 'Oczekuje na kod';
+                
+                // Build action button representation for client
+                let clientBtnHtml = '';
+                let clientHint = '';
+                if (s.status === 'NEW') {
+                    clientHint = 'Wpłać kaucję diagnostyczną za pośrednictwem kasy Stripe.';
+                    clientBtnHtml = `
+                        <button onclick="triggerOrderAction('PAY_DIAGNOSIS')" class="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-bold rounded-lg text-xs cursor-pointer hover:scale-105 transition-all">
+                            🔒 Zapłać Kaucję (40 PLN)
+                        </button>
+                    `;
+                } else if (s.status === 'AWAITING_SHIPMENT') {
+                    clientHint = 'Zanieś paczkę do wybranego Paczkomatu InPost i potwierdź nadanie.';
+                    clientBtnHtml = `
+                        <button onclick="triggerOrderAction('SHIPPED_BY_CLIENT')" class="px-4 py-2 bg-cyan-500 text-slate-950 font-bold rounded-lg text-xs cursor-pointer">
+                            📦 Potwierdzam Umieszczenie w Skrytce
+                        </button>
+                    `;
+                } else if (s.status === 'AWAITING_COST_APPROVAL') {
+                    clientHint = `Zaakceptuj koszty naprawy i części wycenione na ${s.repairCost.toFixed(2)} PLN przez inżyniera.`;
+                    clientBtnHtml = `
+                        <button onclick="triggerOrderAction('APPROVE_REPAIR')" class="px-4 py-2 bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs cursor-pointer">
+                            💳 Autoryzuj i Opłać Depozyt Naprawy
+                        </button>
+                    `;
+                } else if (s.status === 'DELIVERED_AWAITING_CONFIRMATION') {
+                    clientHint = 'Odbierz urządzenie z Paczkomatu i przetestuj. Zwolnij środki lub zgłoś spór.';
+                    clientBtnHtml = `
+                        <button onclick="triggerOrderAction('CONFIRM_DELIVERY_OK')" class="px-4 py-2 bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs cursor-pointer">
+                            ✅ Wszystko działa - Zwolnij Środki
+                        </button>
+                        <button onclick="raiseClientDispute()" class="px-4 py-2 bg-rose-500 text-white font-bold rounded-lg text-xs cursor-pointer">
+                            ⚠️ Zgłoś reklamację / Reklamuj
+                        </button>
+                    `;
+                } else {
+                    clientHint = 'Monitoruj etapy lub komunikuj się swobodnie na czacie.';
+                    clientBtnHtml = `<span class="text-xs text-slate-500 font-medium">Brak wymaganych akcji</span>`;
+                }
+                
+                document.getElementById('client-actions-hint').innerText = clientHint;
+                document.getElementById('client-actions-btn-holder').innerHTML = clientBtnHtml;
+
+                // Sync Service panel UI
+                document.getElementById('service-details-fallback').classList.add('hidden');
+                document.getElementById('service-details-container').classList.remove('hidden');
+
+                document.getElementById('service-detail-id').innerText = `ZLECENIE W WARSZTACIE #${s.id}`;
+                document.getElementById('service-detail-device').innerText = s.deviceName;
+                document.getElementById('service-detail-status').innerText = s.status;
+                document.getElementById('service-detail-client').innerText = s.clientName;
+                document.getElementById('service-detail-email').innerText = s.clientEmail;
+                document.getElementById('service-detail-desc').innerText = s.description;
+                document.getElementById('service-detail-escrow').innerText = `${s.escrowAmount.toFixed(2)} PLN [${s.escrowStatus}]`;
+                document.getElementById('service-detail-target-locker').innerText = s.targetLocker || '--';
+                document.getElementById('service-detail-outbound-track').innerText = s.trackingCodeOutbound || 'Brak nadania';
+
+                // Build Service technician buttons
+                let technicalBtnHtml = '';
+                if (s.status === 'IN_TRANSIT_TO_SERVICE') {
+                    technicalBtnHtml = `
+                        <button onclick="triggerOrderAction('DELIVERED_TO_SERVICE')" class="px-4 py-2.5 bg-indigo-500 text-white rounded-lg text-xs font-bold cursor-pointer">
+                            📥 Przyjmij Paczkę w Warsztacie (InPost)
+                        </button>
+                    `;
+                } else if (s.status === 'IN_DIAGNOSI_MOCK' || s.status === 'IN_DIAGNOSIS') {
+                    technicalBtnHtml = `
+                        <div class="flex gap-2 items-center w-full max-w-md">
+                            <input id="tec-cost" type="number" value="380" placeholder="Koszt naprawy" class="w-24 bg-slate-900 border border-slate-800 rounded p-1.5 text-xs text-white" />
+                            <input id="tec-summary" type="text" value="Naprawa uszkodzonego układu zasilania CD3217" placeholder="Zakres prac" class="flex-grow bg-slate-900 border border-slate-800 rounded p-1.5 text-xs text-white" />
+                            <button onclick="submitTechnicianDiagnosis()" class="px-3 py-1.5 bg-indigo-500 text-white rounded text-xs font-bold whitespace-nowrap">
+                                Wyślij diagnozę
+                            </button>
+                        </div>
+                    `;
+                } else if (s.status === 'IN_REPAIR') {
+                    technicalBtnHtml = `
+                        <button onclick="triggerOrderAction('COMPLETE_REPAIR_WORK')" class="px-4 py-2.5 bg-indigo-500 text-white rounded-lg text-xs font-semibold cursor-pointer">
+                            🛠️ Zakończ Prace Lutownicze i Diagnostykę
+                        </button>
+                    `;
+                } else if (s.status === 'TESTING_AND_REPORTING') {
+                    technicalBtnHtml = `
+                        <button onclick="triggerOrderAction('SHIP_BACK_TO_CLIENT')" class="px-4 py-2.5 bg-cyan-500 text-slate-950 rounded-lg text-xs font-bold cursor-pointer">
+                            🚚 Nadaj Powrotnie do Paczkomatu Klienta (InPost ShipX)
+                        </button>
+                    `;
+                } else if (s.status === 'RETURN_IN_TRANSIT') {
+                    technicalBtnHtml = `
+                        <button onclick="triggerOrderAction('ARRIVED_TO_CLIENT_LOCKER')" class="px-4 py-2.5 bg-indigo-500 text-white rounded-lg text-xs font-bold cursor-pointer">
+                            📦 Dostarcz do skrytki Paczkomatu Klienta
+                        </button>
+                    `;
+                } else {
+                    technicalBtnHtml = `<span class="text-xs text-slate-500">Zlecenie nie wymaga ingerencji logistycznej w tym stanie.</span>`;
+                }
+                document.getElementById('service-actions-btn-holder').innerHTML = technicalBtnHtml;
+
+                // Sync Dispute Admin UI
+                document.getElementById('admin-details-fallback').classList.add('hidden');
+                document.getElementById('admin-details-container').classList.remove('hidden');
+                document.getElementById('admin-detail-id').innerText = `REKLAMACJA DETALE #${s.id}`;
+                document.getElementById('admin-detail-device').innerText = `${s.deviceName} v. ${s.serviceName}`;
+
+                // Chat building
+                let chatHtml = '';
+                messagesList.forEach(m => {
+                    const isSystem = m.sender === 'SYSTEM';
+                    const isClient = m.sender === 'CLIENT';
+                    const isService = m.sender === 'SERVICE';
+                    
+                    let senderLabel = m.sender;
+                    let bubbleColor = 'bg-slate-900 text-slate-300';
+                    let align = 'justify-start';
+
+                    if (isSystem) {
+                        bubbleColor = 'bg-slate-950/40 text-cyan-400 border border-cyan-950 text-center mx-auto';
+                        align = 'justify-center w-full';
+                        senderLabel = 'SYSTEM REF';
+                    } else if ((curRole === 'client' && isClient) || (curRole === 'service' && isService)) {
+                        bubbleColor = 'bg-cyan-500/10 text-cyan-200 border border-cyan-500/10';
+                        align = 'justify-end ml-auto';
+                    }
+
+                    chatHtml += `
+                        <div class="flex ${align} max-w-[85%] mb-2">
+                            <div class="p-3 rounded-xl text-xs leading-relaxed ${bubbleColor}">
+                                <div class="font-bold text-[9px] uppercase tracking-wider mb-1 opacity-75">${senderLabel}</div>
+                                <div>${m.text}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                document.getElementById('client-chat-box').innerHTML = chatHtml;
+                document.getElementById('service-chat-box').innerHTML = chatHtml;
+
+                // Fallback scroll down
+                document.getElementById('client-chat-box').scrollTop = document.getElementById('client-chat-box').scrollHeight;
+                document.getElementById('service-chat-box').scrollTop = document.getElementById('service-chat-box').scrollHeight;
+
+                // System internal logger building
+                let logHtml = '';
+                logsList.forEach(l => {
+                    logHtml += `
+                        <div class="p-2 bg-slate-950/80 border-b border-slate-900 flex flex-col mb-1.5">
+                            <div class="flex justify-between text-[8px] opacity-60">
+                                <span>[${l.category}]</span>
+                                <span>${l.timestamp.slice(11,19)}</span>
+                            </div>
+                            <span class="text-slate-300 font-bold mt-0.5">${l.action}</span>
+                            <span class="text-slate-500 text-[9px] mt-0.5">${l.details}</span>
+                        </div>
+                    `;
+                });
+                document.getElementById('client-logs-box').innerHTML = logHtml;
+                document.getElementById('service-logs-box').innerHTML = logHtml;
+
+                lucide.createIcons();
+            } catch (err) {
+                console.error("Error refreshing active order details:", err);
+            }
+        }
+
+        // Send chat message
+        async function handleSendMessage(e, role) {
+            e.preventDefault();
+            const inputId = role === 'CLIENT' ? 'client-chat-input' : 'service-chat-input';
+            const text = document.getElementById(inputId).value;
+            if (!text || !currentOrderId) return;
+
+            try {
+                const res = await fetch(`/api/orders/${currentOrderId}/messages/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sender: role, text: text })
+                });
+                if (res.ok) {
+                    document.getElementById(inputId).value = '';
+                    refreshOrderDetails(currentOrderId);
+                }
+            } catch (err) {
+                console.error("Send failed:", err);
+            }
+        }
+
+        // Submit action triggers
+        async function triggerOrderAction(actionType, extraData = {}) {
+            if (!currentOrderId) return;
+            try {
+                const res = await fetch(`/api/orders/${currentOrderId}/action/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: actionType, ...extraData })
+                });
+                if (res.ok) {
+                    refreshOrderDetails(currentOrderId);
+                }
+            } catch (err) {
+                console.error("Action trigger failed:", err);
+            }
+        }
+
+        // Helper triggers inside service View
+        function submitTechnicianDiagnosis() {
+            const cost = document.getElementById('tec-cost').value;
+            const summary = document.getElementById('tec-summary').value;
+            triggerOrderAction('SUBMIT_DIAGNOSIS', { cost, summary });
+        }
+
+        function raiseClientDispute() {
+            const reason = prompt("Dlaczego zgłaszasz spór reklamacyjny?", "Sprzęt nie uruchamia się, obudowa ma zarysowania.");
+            if (reason) {
+                triggerOrderAction('RAISE_DISPUTE', { reason });
+            }
+        }
+
+        function resolveDispute(resolutionType) {
+            triggerOrderAction('RESOLVE_DISPUTE', { resolution: resolutionType });
+        }
+    </script>
+</body>
+</html>
